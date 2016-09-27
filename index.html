@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+ <meta charset="utf-8" />
+ <title>Demo: Accessible tab panel using ARIA and Vanilla Javascript - Van11y </title>
+ 
+<link href="./styles.css" rel="stylesheet" media="all" />
+
+<meta name="description" content="This script will transform a simple list of anchors to contents into a fantastic-shiny accessible tabpanel system, using ARIA" />
+<meta name="keywords" content="collection, accessibility, scripts, projects, tab panel, accordion, hide/show, customisable" />
+
+<meta property="og:type" content="website" />
+<!-- Open Graph Meta Data -->
+<meta property="og:title" content="Accessible tab panel using ARIA and Vanilla Javascript - Van11y" />
+<meta property="og:description" content="This script will transform a simple list of anchors to contents into a fantastic-shiny accessible tabpanel system, using ARIA" />
+<meta property="og:image" content="https://van11y.net/apple-touch-icon.png" />
+<meta property="og:url" content="https://van11y.net/accessible-tab-panel/" />
+
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:url" content="https://van11y.net/accessible-tab-panel/" />
+<meta name="twitter:title" content="Accessible tab panel using ARIA and Vanilla Javascript - Van11y" />
+<meta name="twitter:description" content="This script will transform a simple list of anchors to contents into a fantastic-shiny accessible tabpanel system, using ARIA" />
+<meta name="twitter:image" content="https://van11y.net/apple-touch-icon.png" />
+<meta name="twitter:site" content="Van11y" />
+<meta name="twitter:creator" content="Van11y" />
+
+<meta name="robots" content="index, follow" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+</head>
+<body role="document">
+
+
+<div id="page" class="mw960e" role="main">
+
+ <br>
+ <div class="aligncenter">
+ 	<a href="/" class="logo-link"><img src="https://van11y.net/layout/images/logo-van11y.svg" alt="Back to Van11y home page" width="267" height="90" class="logo" /></a>
+ </div>
+ <br>
+
+ <h1 class="aligncenter">Demo: Accessible tab panel using ARIA and Vanilla JS </h1>
+
+ <div class="js-tabs" data-existing-hx="h2" data-tabs-prefix-class="example-tabs">
+  <ul class="js-tablist">
+   <li class="js-tablist__item">
+    <a href="#id_first" id="label_id_first" class="js-tablist__link">1st tab</a>
+   </li>
+   <li class="js-tablist__item">
+    <a href="#id_second" id="label_id_second" class="js-tablist__link">2nd tab</a>
+   </li>
+   <li class="js-tablist__item">
+    <a href="#id_third" id="label_id_third" class="js-tablist__link">3rd tab</a>
+   </li>
+  </ul>
+ <div id="id_first" class="js-tabcontent">
+   <h2>Title</h2>
+   here the content of 1st tab
+ </div>
+ <div id="id_second" class="js-tabcontent">
+   <h2 id="cool-anchor">Other title</h2>
+   here the content of 2nd tab
+ </div>
+ <div id="id_third" class="js-tabcontent">
+   <h2>Another title</h2>
+   here the content of 3rd tab
+ </div>
+</div>
+   
+  
+<div class="footer" role="contentinfo"><br>This demo is a demo of <a href="https://van11y.net/accessible-tab-panel/" class="link">Van11y Accessible tab panel using ARIA</a>.<br></div>
+
+</div>
+<script src="../dist/van11y-accessible-tab-panel-aria.min.js"></script>
+</body>
+</html>

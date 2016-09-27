@@ -1,0 +1,175 @@
+html { 
+  font-size: 62.5%;
+  /* IE9-IE11 math fixing. See https://connect.microsoft.com/IE/feedback/details/816709/ */
+  /* Thanks to @guardian, @victorbritopro, @eQRoeil & Knacss */
+  font-size: calc(1em * 0.625);
+  box-sizing: border-box; 
+}
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+body {
+  background: #fff;
+  color: #444;
+  font-family: 'roboto', Arial, sans-serif;
+  font-size: 1.8em; /* equiv 18px */
+  line-height: 1.5; /* to update if needed */
+}
+
+
+@font-face {
+    /*font-family: 'robotoregular';*/
+    font-family: 'roboto';
+    src: url('https://van11y.net/layout/css/fonts/Roboto-Regular-webfont.eot');
+    src: url('https://van11y.net/layout/css/fonts/Roboto-Regular-webfont.eot?#iefix') format('embedded-opentype'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Regular-webfont.woff2') format('woff2'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Regular-webfont.woff') format('woff'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Regular-webfont.ttf') format('truetype'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Regular-webfont.svg#robotoregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+@font-face {
+    /*font-family: 'robotobold';*/
+    font-family: 'roboto';
+    src: url('https://van11y.net/layout/css/fonts/Roboto-Bold-webfont.eot');
+    src: url('https://van11y.net/layout/css/fonts/Roboto-Bold-webfont.eot?#iefix') format('embedded-opentype'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Bold-webfont.woff2') format('woff2'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Bold-webfont.woff') format('woff'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Bold-webfont.ttf') format('truetype'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Bold-webfont.svg#robotobold') format('svg');
+    font-weight: bold;
+    font-style: normal;
+
+}
+
+@font-face {
+    /*font-family: 'robotoitalic';*/
+    font-family: 'roboto';
+    src: url('https://van11y.net/layout/css/fonts/Roboto-Italic-webfont.eot');
+    src: url('https://van11y.net/layout/css/fonts/Roboto-Italic-webfont.eot?#iefix') format('embedded-opentype'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Italic-webfont.woff2') format('woff2'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Italic-webfont.woff') format('woff'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Italic-webfont.ttf') format('truetype'),
+         url('https://van11y.net/layout/css/fonts/Roboto-Italic-webfont.svg#robotoitalic') format('svg');
+    font-weight: normal;
+    font-style: italic;
+
+}
+
+.mw960e {
+  max-width: 60em;
+  margin: 0 auto;
+}
+.aligncenter {
+  text-align: center;
+}
+h1,
+.h1 {
+  display: block;
+  font-size: 1.55556em; /* equiv 28px */
+  line-height: 1.92857;
+  margin: 0 0 .96429em 0;
+  font-weight: normal;
+}
+h2,
+.h2 {
+  display: block;
+  font-size: 1.33333em; /* equiv 24px */
+  line-height: 1.125;
+  margin: 0 0 1.125em 0;
+  font-weight: normal;
+}
+
+.link {
+  color: #4d287f;
+  cursor: pointer;
+  text-decoration: none;
+  border-bottom: 1px solid #4d287f;
+}
+/* remember focus */
+.link:focus,
+.link:hover,
+.link:active {
+  color: #4d287f;
+  border-bottom: 1px solid #4d287f;
+  outline: 2px dotted;
+}
+/* avoid border on images in links + fix border image IE */
+.link:link img,
+.link:visited img, 
+img {
+  border-style: none;
+}
+/* external links */
+.link[href^="http://"]:after,
+.link[href^="https://"]:after {
+  content:"\202f\2197";
+  speak: none;
+  border-bottom: 1px solid #fff;
+  
+}
+
+.logo-link,
+.logo-link:focus,
+.logo-link:hover,
+.logo-link:active,
+.link.noimg[href^="http://"]:after,
+.link.noimg[href^="https://"]:after {
+  border-bottom: 0;
+}
+
+.link.noimg[href^="http://"]:after,
+.link.noimg[href^="https://"]:after {
+  content: '';
+  speak: none;
+}
+
+
+
+
+/* --------------- styles for tabs -----------------------*/
+
+.invisible {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+}
+
+
+
+.example-tabs-tabs__list {
+  margin: 0;
+  padding: 0;
+}
+.example-tabs-tabs__item {
+  display: inline-block;
+}
+
+.example-tabs-tabs__link {
+  display: inline-block;
+  padding: 1em  2em;
+  background: #f2f2f2;
+  cursor: pointer;
+  color: #148297;
+}
+
+[aria-selected="true"].example-tabs-tabs__link {
+  color: #000;
+}
+
+.example-tabs-tabs__content {
+  background: #f2f2f2;
+  padding: 1em;
+}
+
+[aria-hidden="true"].example-tabs-tabs__content {
+  display: none;
+}
