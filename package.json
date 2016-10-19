@@ -8,8 +8,8 @@
     "ARIA",
     "tab panel",
     "a11y",
-	  "ES6",
-	  "ES2015",
+    "ES6",
+    "ES2015",
     "Vanilla Javascript Plugin"
   ],
   "scripts": {
@@ -44,7 +44,7 @@
     "gulp-babel": "^5.3.0",
     "gulp-rename": "^1.2.2",
     "gulp-uglify": "^1.4.2",
-	  "gulp-header": "^1.7.1"
+    "gulp-header": "^1.7.1"
   }
   
 }
