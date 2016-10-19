@@ -1,0 +1,36 @@
+{
+  "name": "van11y-accessible-tab-panel-aria",
+  "description": "ES2015 accessible tabs panel system, using ARIA (compatible IE9+ when transpiled)",
+  "homepage": "https://van11y.net/accessible-tab-panel/",
+  "main": "van11y-accessible-tab-panel-aria.es6.js",
+  "version": "1.0.0",
+  "keywords": [
+    "Accessibility",
+    "ARIA",
+    "tab panel",
+    "a11y",
+    "ES6",
+    "ES2015",
+    "Vanilla Javascript Plugin"
+  ],
+  "authors": [
+    {
+      "name": "Nicolas Hoffmann",
+      "email": "dante3333@gmail.com",
+      "web": "https://www.nicolas-hoffmann.net/"
+    }
+  ],
+  "repositories": [
+    {
+      "type": "git",
+      "url": "git://github.com/nico3333fr/van11y-accessible-tab-panel-aria.git"
+    }
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "README.md"
+  ]
+}
