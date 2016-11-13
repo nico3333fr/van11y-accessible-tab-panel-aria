@@ -2,6 +2,7 @@
   "title": "Van11y accessible tab panel system using ARIA",
   "name": "van11y-accessible-tab-panel-aria",
   "description": "ES2015 accessible tabs panel system, using ARIA (compatible IE9+ when transpiled)",
+  "main": "dist/van11y-accessible-tab-panel-aria.min.js",
   "version": "1.0.0",
   "keywords": [
     "Accessibility",
@@ -46,5 +47,4 @@
     "gulp-uglify": "^1.4.2",
     "gulp-header": "^1.7.1"
   }
-  
 }
