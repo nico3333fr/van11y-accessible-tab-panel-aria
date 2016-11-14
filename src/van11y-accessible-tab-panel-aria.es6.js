@@ -243,8 +243,6 @@
 
             }
 
-         tabListLink.removeAttribute ( 'href' );
-
       });
 
 

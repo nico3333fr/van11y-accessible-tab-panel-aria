@@ -233,8 +233,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             hx_item.setAttribute('tabindex', '0');
           });
         }
-
-        tabListLink.removeAttribute('href');
       });
 
       if (hash !== '') {
