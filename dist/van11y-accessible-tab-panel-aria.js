@@ -86,7 +86,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   /*  const triggerEvent = (el, event_type) => {
           if (el.fireEvent) {
             el.fireEvent('on' + event_type);
-          } 
+          }
           else {
                 let evObj = document.createEvent('Events');
                 evObj.initEvent(event_type, true, false);
@@ -209,7 +209,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         var linkText = tabListLink.innerText;
 
         addClass(tabListLink, prefixClassName + TABS_LINK_STYLE);
-        setAttributes(tabListLink, (_setAttributes5 = {}, _defineProperty(_setAttributes5, ATTR_ROLE, TABS_ROLE_TAB), _defineProperty(_setAttributes5, ATTR_CONTROLS, idHref), _defineProperty(_setAttributes5, 'tabindex', '-1'), _defineProperty(_setAttributes5, ATTR_SELECTED, 'false'), _setAttributes5));
+        setAttributes(tabListLink, (_setAttributes5 = {
+          'id': TABS_PREFIX_IDS + idHref
+        }, _defineProperty(_setAttributes5, ATTR_ROLE, TABS_ROLE_TAB), _defineProperty(_setAttributes5, ATTR_CONTROLS, idHref), _defineProperty(_setAttributes5, 'tabindex', '-1'), _defineProperty(_setAttributes5, ATTR_SELECTED, 'false'), _setAttributes5));
 
         // panel controlled
         setAttributes(panelControlled, (_setAttributes6 = {}, _defineProperty(_setAttributes6, ATTR_HIDDEN, 'true'), _defineProperty(_setAttributes6, ATTR_ROLE, TABS_ROLE_TABPANEL), _defineProperty(_setAttributes6, ATTR_LABELLEDBY, TABS_PREFIX_IDS + idHref), _setAttributes6));
@@ -231,8 +233,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             hx_item.setAttribute('tabindex', '0');
           });
         }
-
-        tabListLink.removeAttribute('href');
       });
 
       if (hash !== '') {

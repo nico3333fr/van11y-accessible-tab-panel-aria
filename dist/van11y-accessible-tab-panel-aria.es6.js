@@ -13,41 +13,41 @@
   const TABS_JS_LISTLINK = 'js-tablist__link';
   const TABS_JS_CONTENT = 'js-tabcontent';
   const TABS_JS_LINK_TO_TAB = 'js-link-to-tab';
-  
+
   const TABS_DATA_PREFIX_CLASS = 'data-tabs-prefix-class';
   const TABS_DATA_HX = 'data-hx';
   const TABS_DATA_GENERATED_HX_CLASS = 'data-tabs-generated-hx-class';
   const TABS_DATA_EXISTING_HX = 'data-existing-hx';
-  
+
   const TABS_PREFIX_IDS = 'label_';
-  
+
   const TABS_STYLE = 'tabs';
   const TABS_LIST_STYLE = 'tabs__list';
   const TABS_LISTITEM_STYLE = 'tabs__item';
   const TABS_LINK_STYLE = 'tabs__link';
   const TABS_CONTENT_STYLE = 'tabs__content';
-  
+
   const TABS_HX_DEFAULT_CLASS = 'invisible';
-  
+
   const TABS_ROLE_TABLIST = 'tablist';
   const TABS_ROLE_TAB = 'tab';
   const TABS_ROLE_TABPANEL = 'tabpanel';
   const TABS_ROLE_PRESENTATION = 'presentation';
-  
+
   const ATTR_ROLE = 'role';
   const ATTR_LABELLEDBY = 'aria-labelledby';
   const ATTR_HIDDEN = 'aria-hidden';
   const ATTR_CONTROLS = 'aria-controls';
   const ATTR_SELECTED = 'aria-selected';
-  
+
   const DELAY_HASH_UPDATE = 1000;
-  
+
   let hash = window.location.hash.replace('#', '' );
-  
+
   //const IS_OPENED_CLASS = 'is-opened';
 
 
-  
+
   const findById = id => doc.getElementById(id);
 
   const addClass = (el, className) => {
@@ -58,7 +58,7 @@
              el.className += ' ' + className; // IE 8+
              }
         }
-        
+
   const removeClass = (el, className) => {
         if (el.classList) {
           el.classList.remove(className); // IE 10+
@@ -76,7 +76,7 @@
              return new RegExp('(^| )' + className + '( |$)', 'gi').test(el.className); // IE 8+ ?
              }
         }
-        
+
   const setAttributes = (node, attrs) => {
         Object
           .keys(attrs)
@@ -87,7 +87,7 @@
 /*  const triggerEvent = (el, event_type) => {
         if (el.fireEvent) {
           el.fireEvent('on' + event_type);
-        } 
+        }
         else {
               let evObj = document.createEvent('Events');
               evObj.initEvent(event_type, true, false);
@@ -140,7 +140,7 @@
             selectLink ( linkList[indice_trouve-1] );
             setTimeout(function(){ linkList[indice_trouve-1].focus(); }, 0);
             }
-           
+
         }
 
   /* gets an element el, search if it is child of parent class, returns id of the parent */
@@ -164,7 +164,7 @@
 
   // Find all TABS
   const $listTabs = () => [].slice.call(doc.querySelectorAll('.' + TABS_JS));
-  
+
 
   const onLoad = () => {
 
@@ -180,7 +180,7 @@
       let $tabListItems = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LISTITEM));
       let $tabListLinks = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LISTLINK));
       let noTabSelected = true;
-      
+
       //console.log(prefixClassName + TABS_LIST_STYLE);
       // container
       addClass( tabs_node, prefixClassName + TABS_STYLE );
@@ -210,6 +210,7 @@
 
          addClass( tabListLink, prefixClassName + TABS_LINK_STYLE );
          setAttributes(tabListLink, {
+          'id' : TABS_PREFIX_IDS + idHref,
            [ATTR_ROLE] : TABS_ROLE_TAB ,
            [ATTR_CONTROLS] : idHref ,
            'tabindex' : '-1' ,
@@ -223,7 +224,7 @@
            [ATTR_LABELLEDBY] : TABS_PREFIX_IDS + idHref
          });
          addClass( panelControlled, prefixClassName + TABS_CONTENT_STYLE );
-         
+
          // hx
          if ( hx !== '' ) {
             let hx_node = document.createElement(hx);
@@ -239,17 +240,15 @@
             $hx_existing.forEach((hx_item, index) => {
                hx_item.setAttribute( 'tabindex' , '0' );
                });
-            
+
             }
-         
-         tabListLink.removeAttribute ( 'href' );
-         
+
       });
-      
-      
+
+
       if ( hash !== '' ) {
          let nodeHashed = findById( hash );
-         if ( nodeHashed !== null ) { // just in case of an dumb error 
+         if ( nodeHashed !== null ) { // just in case of an dumb error
              // search if hash is current tabs_node
              if ( tabs_node.querySelector( '#' + hash ) !== null ) {
                  // search if hash is ON tabs
@@ -288,14 +287,14 @@
           let panelFirst = findById( $tabListLinks[0].getAttribute(ATTR_CONTROLS) );
           panelFirst.removeAttribute( ATTR_HIDDEN );
          }
-      
+
     });
 
-  // click on 
+  // click on
   ['click', 'keydown'] // , 'focus'
     .forEach(eventName => {
        let isCtrl = false;
-       
+
        doc.body
           .addEventListener(eventName, e => {
 
@@ -308,17 +307,17 @@
                 let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
                 let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
                 let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
-                
+
                 // aria selected false on all links
                 unSelectLinks( $parentListLinks );
                 // add aria-hidden on all tabs contents
                 unSelectContents( $parentListContents );
                 // add aria selected on selected link + show linked panel
                 selectLink( linkSelected );
-                
+
                 // anchor
                 //setTimeout(function(){ history.pushState(null, null, location.pathname + location.search + '#' + linkSelected.getAttribute(ATTR_CONTROLS))}, DELAY_HASH_UPDATE);
-                
+
                 e.preventDefault();
                 }
 
@@ -398,7 +397,7 @@
                     setTimeout(function(){ linkSelected.focus(); }, 0);
                     e.preventDefault();
                     }
-                // strike pageup + ctrl => go to prev header 
+                // strike pageup + ctrl => go to prev header
                 if ( e.keyCode == 33 && e.ctrlKey ) {
                    // go to header
                    linkSelected.focus();
@@ -413,9 +412,9 @@
                       else {
                             selectLinkInList( $parentListItems, $parentListLinks, $parentListContents, 'prev' );
                            }
-                          
+
                    }
-                // strike pagedown + ctrl => go to next header 
+                // strike pagedown + ctrl => go to next header
                 if ( e.keyCode == 34 && e.ctrlKey ) {
                    // go to header
                    linkSelected.focus();
