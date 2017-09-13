@@ -142,6 +142,16 @@ So with ```data-tabs-prefix-class="last-tabs"``` you have:
 
 ## Bonuses
 
+__Tab panel opened by default__
+        
+If you need a tab to be opened by default, it is possible, using <code>data-selected="1"</code> on the <code>.js-tablist__link</code> you need to be opened (<a href="https://van11y.net/downloads/tab-panel/demo/index.html">See the demo, second example</a>).
+        
+Other tabs are still available, here are the rules for this feature:
+     
+- The fragment detection (explained below) will <strong>always</strong> have priority on this feature;
+- If there are several <code>data-selected="1"</code> put on tabs in the same group (which does not make sense and should never happen), the first one will be used.
+
+
 __Anchor added in URL__
 
 As you may notice (or not), now the script adds a fragment in the URL when you click or select a tab using the keyboard. It is cool when you want to copy/paste the link of the page you are reading, and the opened tab will be the good one!

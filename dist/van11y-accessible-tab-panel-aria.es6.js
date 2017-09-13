@@ -19,6 +19,8 @@
     const TABS_DATA_GENERATED_HX_CLASS = 'data-tabs-generated-hx-class';
     const TABS_DATA_EXISTING_HX = 'data-existing-hx';
 
+    const TABS_DATA_SELECTED_TAB = 'data-selected';
+
     const TABS_PREFIX_IDS = 'label_';
 
     const TABS_STYLE = 'tabs';
@@ -125,7 +127,7 @@
 
     const selectLinkInList = (itemsList, linkList, contentList, param) => {
         let indice_trouve;
-        //let parentElement = el.parentNode;
+
         itemsList
             .forEach((itemNode, index) => {
                 if (itemNode.querySelector('.' + TABS_JS_LISTLINK).getAttribute(ATTR_SELECTED) === 'true') {
@@ -185,9 +187,9 @@
                 let $tabList = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LIST));
                 let $tabListItems = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LISTITEM));
                 let $tabListLinks = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LISTLINK));
+                let $tabListPanels = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_CONTENT));
                 let noTabSelected = true;
 
-                //console.log(prefixClassName + TABS_LIST_STYLE);
                 // container
                 addClass(tabs_node, prefixClassName + TABS_STYLE);
                 tabs_node.setAttribute('id', TABS_STYLE + iLisible);
@@ -213,6 +215,7 @@
                     let idHref = tabListLink.getAttribute("href").replace('#', '');
                     let panelControlled = findById(idHref);
                     let linkText = tabListLink.innerText;
+                    let panelSelected = tabListLink.hasAttribute(TABS_DATA_SELECTED_TAB) === true;
 
                     addClass(tabListLink, prefixClassName + TABS_LINK_STYLE);
                     setAttributes(tabListLink, {
@@ -221,7 +224,7 @@
                         'tabindex': '-1',
                         [ATTR_SELECTED]: 'false'
                     });
-
+                    
                     // panel controlled
                     setAttributes(panelControlled, {
                         [ATTR_HIDDEN]: 'true',
@@ -229,6 +232,18 @@
                         [ATTR_LABELLEDBY]: TABS_PREFIX_IDS + idHref
                     });
                     addClass(panelControlled, prefixClassName + TABS_CONTENT_STYLE);
+
+                    // if already selected
+                    if (panelSelected && noTabSelected) {
+                        noTabSelected = false;
+                        setAttributes(tabListLink, {
+                            'tabindex': '0',
+                            [ATTR_SELECTED]: 'true'
+                        });
+                        setAttributes(panelControlled, {
+                            [ATTR_HIDDEN]: 'false'
+                        });
+                    }
 
                     // hx
                     if (hx !== '') {
@@ -260,6 +275,10 @@
                         if (tabs_node.querySelector('#' + hash) !== null) {
                             // search if hash is ON tabs
                             if (hasClass(nodeHashed, TABS_JS_CONTENT) === true) {
+                                // unselect others
+                                unSelectLinks($tabListLinks);
+                                unSelectContents($tabListPanels);
+                                // select this one
                                 nodeHashed.removeAttribute(ATTR_HIDDEN);
                                 let linkHashed = findById(TABS_PREFIX_IDS + hash);
                                 setAttributes(linkHashed, {
@@ -271,6 +290,10 @@
                                 // search if hash is IN tabs
                                 let panelParentId = searchParent(nodeHashed, TABS_JS_CONTENT);
                                 if (panelParentId !== '') {
+                                    // unselect others
+                                    unSelectLinks($tabListLinks);
+                                    unSelectContents($tabListPanels);
+                                    // select this one
                                     let panelParent = findById(panelParentId);
                                     panelParent.removeAttribute(ATTR_HIDDEN);
                                     let linkParent = findById(TABS_PREFIX_IDS + panelParentId);
@@ -284,6 +307,7 @@
                         }
                     }
                 }
+
                 // if no selected => select first
                 if (noTabSelected === true) {
                     setAttributes($tabListLinks[0], {
@@ -297,7 +321,7 @@
             });
 
         // click on 
-        ['click', 'keydown'] // , 'focus'
+        ['click', 'keydown']
         .forEach(eventName => {
             //let isCtrl = false;
 
@@ -320,9 +344,6 @@
                         unSelectContents($parentListContents);
                         // add aria selected on selected link + show linked panel
                         selectLink(linkSelected);
-
-                        // anchor
-                        //setTimeout(function(){ history.pushState(null, null, location.pathname + location.search + '#' + linkSelected.getAttribute(ATTR_CONTROLS))}, DELAY_HASH_UPDATE);
 
                         e.preventDefault();
                     }

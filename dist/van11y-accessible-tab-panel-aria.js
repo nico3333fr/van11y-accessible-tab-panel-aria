@@ -23,6 +23,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     var TABS_DATA_GENERATED_HX_CLASS = 'data-tabs-generated-hx-class';
     var TABS_DATA_EXISTING_HX = 'data-existing-hx';
 
+    var TABS_DATA_SELECTED_TAB = 'data-selected';
+
     var TABS_PREFIX_IDS = 'label_';
 
     var TABS_STYLE = 'tabs';
@@ -123,7 +125,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     var selectLinkInList = function selectLinkInList(itemsList, linkList, contentList, param) {
         var indice_trouve = undefined;
-        //let parentElement = el.parentNode;
+
         itemsList.forEach(function (itemNode, index) {
             if (itemNode.querySelector('.' + TABS_JS_LISTLINK).getAttribute(ATTR_SELECTED) === 'true') {
                 indice_trouve = index;
@@ -180,9 +182,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             var $tabList = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LIST));
             var $tabListItems = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LISTITEM));
             var $tabListLinks = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_LISTLINK));
+            var $tabListPanels = [].slice.call(tabs_node.querySelectorAll('.' + TABS_JS_CONTENT));
             var noTabSelected = true;
 
-            //console.log(prefixClassName + TABS_LIST_STYLE);
             // container
             addClass(tabs_node, prefixClassName + TABS_STYLE);
             tabs_node.setAttribute('id', TABS_STYLE + iLisible);
@@ -208,6 +210,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 var idHref = tabListLink.getAttribute("href").replace('#', '');
                 var panelControlled = findById(idHref);
                 var linkText = tabListLink.innerText;
+                var panelSelected = tabListLink.hasAttribute(TABS_DATA_SELECTED_TAB) === true;
 
                 addClass(tabListLink, prefixClassName + TABS_LINK_STYLE);
                 setAttributes(tabListLink, (_setAttributes5 = {}, _defineProperty(_setAttributes5, ATTR_ROLE, TABS_ROLE_TAB), _defineProperty(_setAttributes5, ATTR_CONTROLS, idHref), _defineProperty(_setAttributes5, 'tabindex', '-1'), _defineProperty(_setAttributes5, ATTR_SELECTED, 'false'), _setAttributes5));
@@ -215,6 +218,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 // panel controlled
                 setAttributes(panelControlled, (_setAttributes6 = {}, _defineProperty(_setAttributes6, ATTR_HIDDEN, 'true'), _defineProperty(_setAttributes6, ATTR_ROLE, TABS_ROLE_TABPANEL), _defineProperty(_setAttributes6, ATTR_LABELLEDBY, TABS_PREFIX_IDS + idHref), _setAttributes6));
                 addClass(panelControlled, prefixClassName + TABS_CONTENT_STYLE);
+
+                // if already selected
+                if (panelSelected && noTabSelected) {
+                    noTabSelected = false;
+                    setAttributes(tabListLink, _defineProperty({
+                        'tabindex': '0'
+                    }, ATTR_SELECTED, 'true'));
+                    setAttributes(panelControlled, _defineProperty({}, ATTR_HIDDEN, 'false'));
+                }
 
                 // hx
                 if (hx !== '') {
@@ -244,6 +256,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     if (tabs_node.querySelector('#' + hash) !== null) {
                         // search if hash is ON tabs
                         if (hasClass(nodeHashed, TABS_JS_CONTENT) === true) {
+                            // unselect others
+                            unSelectLinks($tabListLinks);
+                            unSelectContents($tabListPanels);
+                            // select this one
                             nodeHashed.removeAttribute(ATTR_HIDDEN);
                             var linkHashed = findById(TABS_PREFIX_IDS + hash);
                             setAttributes(linkHashed, _defineProperty({
@@ -254,6 +270,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                             // search if hash is IN tabs
                             var panelParentId = searchParent(nodeHashed, TABS_JS_CONTENT);
                             if (panelParentId !== '') {
+                                // unselect others
+                                unSelectLinks($tabListLinks);
+                                unSelectContents($tabListPanels);
+                                // select this one
                                 var panelParent = findById(panelParentId);
                                 panelParent.removeAttribute(ATTR_HIDDEN);
                                 var linkParent = findById(TABS_PREFIX_IDS + panelParentId);
@@ -266,6 +286,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     }
                 }
             }
+
             // if no selected => select first
             if (noTabSelected === true) {
                 setAttributes($tabListLinks[0], _defineProperty({
@@ -277,8 +298,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         });
 
         // click on
-        ['click', 'keydown'] // , 'focus'
-        .forEach(function (eventName) {
+        ['click', 'keydown'].forEach(function (eventName) {
             //let isCtrl = false;
 
             doc.body.addEventListener(eventName, function (e) {
@@ -299,9 +319,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     unSelectContents($parentListContents);
                     // add aria selected on selected link + show linked panel
                     selectLink(linkSelected);
-
-                    // anchor
-                    //setTimeout(function(){ history.pushState(null, null, location.pathname + location.search + '#' + linkSelected.getAttribute(ATTR_CONTROLS))}, DELAY_HASH_UPDATE);
 
                     e.preventDefault();
                 }
