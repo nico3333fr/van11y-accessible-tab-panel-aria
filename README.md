@@ -37,7 +37,7 @@ __Conventions__
 Then, follow the conventions given in this minimal example (in bold).
 
 - use classes needed (```js-tabs```, ```js-tablist```, ```js-tablist__item```, ```js-tablist__link```, ```js-tabcontent```)
-- be careful to use the convention in the links ```a href="#id_first" id="label_id_first"```
+- be careful to use the convention in the links ```a href="#id_first"```
 - check that your anchors are working.
 - for accessibility purposes (for VoiceOver), the plugin has to give focus to ```hx``` (```h2```, ```h3```, ```h4```, etc.) in tab contents.
 
@@ -51,10 +51,10 @@ Example without ```hx```:
 <div class="js-tabs">
   <ul class="js-tablist" data-hx="h2">
    <li class="js-tablist__item">
-    <a href="#id_first" id="label_id_first" class="js-tablist__link">1st tab</a>
+    <a href="#id_first" class="js-tablist__link">1st tab</a>
    </li>
    <li class="js-tablist__item">
-    <a href="#id_second" id="label_id_second" class="js-tablist__link">2nd tab</a>
+    <a href="#id_second" class="js-tablist__link">2nd tab</a>
    </li>
   </ul>
  <div id="id_first" class="js-tabcontent">
@@ -70,10 +70,10 @@ Example with ```hx```:
 <div class="js-tabs">
   <ul class="js-tablist" data-existing-hx="h2">
    <li class="js-tablist__item">
-    <a href="#id_first" id="label_id_first" class="js-tablist__link">1st tab</a>
+    <a href="#id_first" class="js-tablist__link">1st tab</a>
    </li>
    <li class="js-tablist__item">
-    <a href="#id_second" id="label_id_second" class="js-tablist__link">2nd tab</a>
+    <a href="#id_second" class="js-tablist__link">2nd tab</a>
    </li>
   </ul>
  <div id="id_first" class="js-tabcontent">
@@ -86,6 +86,10 @@ Example with ```hx```:
  </div>
 </div>
 ```
+
+The script is launched when the page is loaded. If you need to execute it on AJAX-inserted content, you may use for example on `<div id="newContent">your tab panel source</div>`:
+
+```van11yAccessibleTabPanelAria(document.getElementById('newContent'));```
 
 ## Keyboard shortcuts
 

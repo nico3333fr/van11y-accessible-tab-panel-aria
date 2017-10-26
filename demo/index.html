@@ -3,7 +3,7 @@
 <head>
  <meta charset="utf-8" />
  <title>Demo: Accessible tab panel using ARIA and Vanilla Javascript - Van11y </title>
- 
+
 <link href="./styles.css" rel="stylesheet" media="all" />
 
 <meta name="description" content="This script will transform a simple list of anchors to contents into a fantastic-shiny accessible tabpanel system, using ARIA" />
@@ -44,13 +44,13 @@
  <div class="js-tabs" data-existing-hx="h2" data-tabs-prefix-class="example-tabs">
   <ul class="js-tablist">
    <li class="js-tablist__item">
-    <a href="#id_first" id="label_id_first" class="js-tablist__link">1st tab</a>
+    <a href="#id_first" class="js-tablist__link">1st tab</a>
    </li>
    <li class="js-tablist__item">
-    <a href="#id_second" id="label_id_second" class="js-tablist__link">2nd tab</a>
+    <a href="#id_second" class="js-tablist__link">2nd tab</a>
    </li>
    <li class="js-tablist__item">
-    <a href="#id_third" id="label_id_third" class="js-tablist__link">3rd tab</a>
+    <a href="#id_third" class="js-tablist__link">3rd tab</a>
    </li>
   </ul>
  <div id="id_first" class="js-tabcontent">
@@ -72,13 +72,13 @@
  <div class="js-tabs" data-existing-hx="h2" data-tabs-prefix-class="example-tabs">
   <ul class="js-tablist">
    <li class="js-tablist__item">
-    <a href="#id_fourth" id="label_id_fourth" class="js-tablist__link">1st tab</a>
+    <a href="#id_fourth" class="js-tablist__link">1st tab</a>
    </li>
    <li class="js-tablist__item">
-    <a href="#id_fifth" id="label_id_fifth" class="js-tablist__link" data-selected="1">2nd tab (selected)</a>
+    <a href="#id_fifth" class="js-tablist__link" data-selected="1">2nd tab (selected)</a>
    </li>
    <li class="js-tablist__item">
-    <a href="#id_sixth" id="label_id_sixth" class="js-tablist__link">3rd tab</a>
+    <a href="#id_sixth" class="js-tablist__link">3rd tab</a>
    </li>
   </ul>
  <div id="id_fourth" class="js-tabcontent">
@@ -88,15 +88,15 @@
  <div id="id_fifth" class="js-tabcontent">
    <h2>Other title</h2>
    here the content of 2nd tab<br />
-   Displayed by default thanks to <code>data-selected="1"</code> attribute on <code>js-tablist__link</code>. 
+   Displayed by default thanks to <code>data-selected="1"</code> attribute on <code>js-tablist__link</code>.
  </div>
  <div id="id_sixth" class="js-tabcontent">
    <h2>Another title</h2>
    here the content of 3rd tab
  </div>
 </div>
-   
-  
+
+
 <div class="footer" role="contentinfo"><br>These demos are taken from <a href="https://van11y.net/accessible-tab-panel/" class="link">Van11y Accessible tab panel using <abbr title="Accessible Rich Internet Applications">ARIA</abbr></a>.<br></div>
 
 </div>

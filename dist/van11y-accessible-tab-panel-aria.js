@@ -86,16 +86,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             node.setAttribute(attribute, attrs[attribute]);
         });
     };
-    /*  const triggerEvent = (el, event_type) => {
-            if (el.fireEvent) {
-              el.fireEvent('on' + event_type);
-            }
-            else {
-                  let evObj = document.createEvent('Events');
-                  evObj.initEvent(event_type, true, false);
-                  el.dispatchEvent(evObj);
-                 }
-            }*/
     var unSelectLinks = function unSelectLinks(elts) {
         elts.forEach(function (link_node) {
             var _setAttributes;
@@ -165,16 +155,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         }
     };
 
-    // Find all TABS
+    /** Find all tabs inside a container
+     * @param  {Node} node Default document
+     * @return {Array}
+     */
     var $listTabs = function $listTabs() {
-        return [].slice.call(doc.querySelectorAll('.' + TABS_JS));
+        var node = arguments.length <= 0 || arguments[0] === undefined ? doc : arguments[0];
+        return [].slice.call(node.querySelectorAll('.' + TABS_JS));
     };
 
-    var onLoad = function onLoad() {
+    /**
+     * Build tooltips for a container
+     * @param  {Node} node
+     */
+    var attach = function attach(node) {
 
-        $listTabs().forEach(function (tabs_node, index) {
+        $listTabs(node).forEach(function (tabs_node) {
 
-            var iLisible = index + 1;
+            var iLisible = Math.random().toString(32).slice(2, 12);
             var prefixClassName = tabs_node.hasAttribute(TABS_DATA_PREFIX_CLASS) === true ? tabs_node.getAttribute(TABS_DATA_PREFIX_CLASS) + '-' : '';
             var hx = tabs_node.hasAttribute(TABS_DATA_HX) === true ? tabs_node.getAttribute(TABS_DATA_HX) : '';
             var hxGeneratedClass = tabs_node.hasAttribute(TABS_DATA_GENERATED_HX_CLASS) === true ? tabs_node.getAttribute(TABS_DATA_GENERATED_HX_CLASS) : TABS_HX_DEFAULT_CLASS;
@@ -298,36 +296,94 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                 panelFirst.removeAttribute(ATTR_HIDDEN);
             }
         });
+    };
 
-        // click on
-        ['click', 'keydown'].forEach(function (eventName) {
-            //let isCtrl = false;
+    /* listeners */
+    ['click', 'keydown'].forEach(function (eventName) {
+        //let isCtrl = false;
 
-            doc.body.addEventListener(eventName, function (e) {
+        doc.body.addEventListener(eventName, function (e) {
 
-                // click on a tab link or on something IN a tab link
-                var parentLink = searchParent(e.target, TABS_JS_LISTLINK);
-                if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'click') {
-                    var linkSelected = hasClass(e.target, TABS_JS_LISTLINK) === true ? e.target : findById(parentLink);
-                    var parentTabId = searchParent(e.target, TABS_JS);
-                    var parentTab = findById(parentTabId);
-                    //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
-                    var $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
-                    var $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
+            // click on a tab link or on something IN a tab link
+            var parentLink = searchParent(e.target, TABS_JS_LISTLINK);
+            if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'click') {
+                var linkSelected = hasClass(e.target, TABS_JS_LISTLINK) === true ? e.target : findById(parentLink);
+                var parentTabId = searchParent(e.target, TABS_JS);
+                var parentTab = findById(parentTabId);
+                //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+                var $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
+                var $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
 
-                    // aria selected false on all links
+                // aria selected false on all links
+                unSelectLinks($parentListLinks);
+                // add aria-hidden on all tabs contents
+                unSelectContents($parentListContents);
+                // add aria selected on selected link + show linked panel
+                selectLink(linkSelected);
+
+                e.preventDefault();
+            }
+
+            // Key down on tabs
+            if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'keydown') {
+                //let linkSelected = hasClass( e.target, TABS_JS_LISTLINK) === true ? e.target : findById( parentLink );
+                var parentTabId = searchParent(e.target, TABS_JS);
+                var parentTab = findById(parentTabId);
+                var $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+                var $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
+                var $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
+                var firstLink = $parentListItems[0].querySelector('.' + TABS_JS_LISTLINK);
+                var lastLink = $parentListItems[$parentListItems.length - 1].querySelector('.' + TABS_JS_LISTLINK);
+
+                // strike home on a tab => 1st tab
+                if (e.keyCode === 36) {
                     unSelectLinks($parentListLinks);
-                    // add aria-hidden on all tabs contents
                     unSelectContents($parentListContents);
-                    // add aria selected on selected link + show linked panel
-                    selectLink(linkSelected);
+                    selectLink(firstLink);
 
                     e.preventDefault();
                 }
+                // strike end on a tab => last tab
+                else if (e.keyCode === 35) {
+                        unSelectLinks($parentListLinks);
+                        unSelectContents($parentListContents);
+                        selectLink(lastLink);
 
-                // Key down on tabs
-                if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'keydown') {
-                    //let linkSelected = hasClass( e.target, TABS_JS_LISTLINK) === true ? e.target : findById( parentLink );
+                        e.preventDefault();
+                    }
+                    // strike up or left on the tab => previous tab
+                    else if ((e.keyCode === 37 || e.keyCode === 38) && !e.ctrlKey) {
+                            if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
+                                unSelectLinks($parentListLinks);
+                                unSelectContents($parentListContents);
+                                selectLink(lastLink);
+
+                                e.preventDefault();
+                            } else {
+                                selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
+                                e.preventDefault();
+                            }
+                        }
+                        // strike down or right in the tab => next tab
+                        else if ((e.keyCode === 40 || e.keyCode === 39) && !e.ctrlKey) {
+                                if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
+                                    unSelectLinks($parentListLinks);
+                                    unSelectContents($parentListContents);
+                                    selectLink(firstLink);
+
+                                    e.preventDefault();
+                                } else {
+                                    selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
+                                    e.preventDefault();
+                                }
+                            }
+            }
+
+            // Key down in tab panels
+            var parentTabPanelId = searchParent(e.target, TABS_JS_CONTENT);
+            if (parentTabPanelId !== '' && eventName === 'keydown') {
+                (function () {
+                    var linkSelected = findById(findById(parentTabPanelId).getAttribute(ATTR_LABELLEDBY));
                     var parentTabId = searchParent(e.target, TABS_JS);
                     var parentTab = findById(parentTabId);
                     var $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
@@ -336,123 +392,71 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
                     var firstLink = $parentListItems[0].querySelector('.' + TABS_JS_LISTLINK);
                     var lastLink = $parentListItems[$parentListItems.length - 1].querySelector('.' + TABS_JS_LISTLINK);
 
-                    // strike home on a tab => 1st tab
-                    if (e.keyCode === 36) {
-                        unSelectLinks($parentListLinks);
-                        unSelectContents($parentListContents);
-                        selectLink(firstLink);
-
+                    // strike up + ctrl => go to header
+                    if (e.keyCode === 38 && e.ctrlKey) {
+                        setTimeout(function () {
+                            linkSelected.focus();
+                        }, 0);
                         e.preventDefault();
                     }
-                    // strike end on a tab => last tab
-                    else if (e.keyCode === 35) {
+                    // strike pageup + ctrl => go to prev header
+                    if (e.keyCode === 33 && e.ctrlKey) {
+                        // go to header
+                        linkSelected.focus();
+                        e.preventDefault();
+                        // then previous
+                        if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
                             unSelectLinks($parentListLinks);
                             unSelectContents($parentListContents);
                             selectLink(lastLink);
-
-                            e.preventDefault();
+                        } else {
+                            selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
                         }
-                        // strike up or left on the tab => previous tab
-                        else if ((e.keyCode === 37 || e.keyCode === 38) && !e.ctrlKey) {
-                                if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
-                                    unSelectLinks($parentListLinks);
-                                    unSelectContents($parentListContents);
-                                    selectLink(lastLink);
-
-                                    e.preventDefault();
-                                } else {
-                                    selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
-                                    e.preventDefault();
-                                }
-                            }
-                            // strike down or right in the tab => next tab
-                            else if ((e.keyCode === 40 || e.keyCode === 39) && !e.ctrlKey) {
-                                    if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
-                                        unSelectLinks($parentListLinks);
-                                        unSelectContents($parentListContents);
-                                        selectLink(firstLink);
-
-                                        e.preventDefault();
-                                    } else {
-                                        selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
-                                        e.preventDefault();
-                                    }
-                                }
-                }
-
-                // Key down in tab panels
-                var parentTabPanelId = searchParent(e.target, TABS_JS_CONTENT);
-                if (parentTabPanelId !== '' && eventName === 'keydown') {
-                    (function () {
-                        var linkSelected = findById(findById(parentTabPanelId).getAttribute(ATTR_LABELLEDBY));
-                        var parentTabId = searchParent(e.target, TABS_JS);
-                        var parentTab = findById(parentTabId);
-                        var $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
-                        var $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
-                        var $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
-                        var firstLink = $parentListItems[0].querySelector('.' + TABS_JS_LISTLINK);
-                        var lastLink = $parentListItems[$parentListItems.length - 1].querySelector('.' + TABS_JS_LISTLINK);
-
-                        // strike up + ctrl => go to header
-                        if (e.keyCode === 38 && e.ctrlKey) {
-                            setTimeout(function () {
-                                linkSelected.focus();
-                            }, 0);
-                            e.preventDefault();
+                    }
+                    // strike pagedown + ctrl => go to next header
+                    if (e.keyCode === 34 && e.ctrlKey) {
+                        // go to header
+                        linkSelected.focus();
+                        e.preventDefault();
+                        // then next
+                        if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
+                            unSelectLinks($parentListLinks);
+                            unSelectContents($parentListContents);
+                            selectLink(firstLink);
+                        } else {
+                            selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
                         }
-                        // strike pageup + ctrl => go to prev header
-                        if (e.keyCode === 33 && e.ctrlKey) {
-                            // go to header
-                            linkSelected.focus();
-                            e.preventDefault();
-                            // then previous
-                            if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
-                                unSelectLinks($parentListLinks);
-                                unSelectContents($parentListContents);
-                                selectLink(lastLink);
-                            } else {
-                                selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
-                            }
-                        }
-                        // strike pagedown + ctrl => go to next header
-                        if (e.keyCode === 34 && e.ctrlKey) {
-                            // go to header
-                            linkSelected.focus();
-                            e.preventDefault();
-                            // then next
-                            if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
-                                unSelectLinks($parentListLinks);
-                                unSelectContents($parentListContents);
-                                selectLink(firstLink);
-                            } else {
-                                selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
-                            }
-                        }
-                    })();
-                }
+                    }
+                })();
+            }
 
-                // click on a tab link
-                var parentLinkToPanelId = searchParent(e.target, TABS_JS_LINK_TO_TAB);
-                if ((hasClass(e.target, TABS_JS_LINK_TO_TAB) === true || parentLinkToPanelId !== '') && eventName === 'click') {
-                    var panelSelectedId = hasClass(e.target, TABS_JS_LINK_TO_TAB) === true ? e.target.getAttribute('href').replace('#', '') : findById(parentLinkToPanelId).replace('#', '');
-                    var panelSelected = findById(panelSelectedId);
-                    var buttonPanelSelected = findById(panelSelected.getAttribute(ATTR_LABELLEDBY));
-                    var parentTabId = searchParent(e.target, TABS_JS);
-                    var parentTab = findById(parentTabId);
-                    //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
-                    var $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
-                    var $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
+            // click on a tab link
+            var parentLinkToPanelId = searchParent(e.target, TABS_JS_LINK_TO_TAB);
+            if ((hasClass(e.target, TABS_JS_LINK_TO_TAB) === true || parentLinkToPanelId !== '') && eventName === 'click') {
+                var panelSelectedId = hasClass(e.target, TABS_JS_LINK_TO_TAB) === true ? e.target.getAttribute('href').replace('#', '') : findById(parentLinkToPanelId).replace('#', '');
+                var panelSelected = findById(panelSelectedId);
+                var buttonPanelSelected = findById(panelSelected.getAttribute(ATTR_LABELLEDBY));
+                var parentTabId = searchParent(e.target, TABS_JS);
+                var parentTab = findById(parentTabId);
+                //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+                var $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
+                var $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
 
-                    unSelectLinks($parentListLinks);
-                    unSelectContents($parentListContents);
-                    selectLink(buttonPanelSelected);
+                unSelectLinks($parentListLinks);
+                unSelectContents($parentListContents);
+                selectLink(buttonPanelSelected);
 
-                    e.preventDefault();
-                }
-            }, true);
-        });
+                e.preventDefault();
+            }
+        }, true);
+    });
+
+    var onLoad = function onLoad() {
+        attach();
         document.removeEventListener('DOMContentLoaded', onLoad);
     };
 
     document.addEventListener('DOMContentLoaded', onLoad);
+
+    window.van11yAccessibleTabPanelAria = attach;
 })(document);
