@@ -11,14 +11,14 @@
 
 <meta property="og:type" content="website" />
 <!-- Open Graph Meta Data -->
-<meta property="og:title" content="Accessible tab panel using ARIA and Vanilla Javascript - Van11y" />
+<meta property="og:title" content="Demo: Accessible tab panel using ARIA and Vanilla Javascript - Van11y" />
 <meta property="og:description" content="This script will transform a simple list of anchors to contents into a fantastic-shiny accessible tabpanel system, using ARIA" />
 <meta property="og:image" content="https://van11y.net/apple-touch-icon.png" />
 <meta property="og:url" content="https://van11y.net/accessible-tab-panel/" />
 
 <meta name="twitter:card" content="summary" />
 <meta name="twitter:url" content="https://van11y.net/accessible-tab-panel/" />
-<meta name="twitter:title" content="Accessible tab panel using ARIA and Vanilla Javascript - Van11y" />
+<meta name="twitter:title" content="Demo: Accessible tab panel using ARIA and Vanilla Javascript - Van11y" />
 <meta name="twitter:description" content="This script will transform a simple list of anchors to contents into a fantastic-shiny accessible tabpanel system, using ARIA" />
 <meta name="twitter:image" content="https://van11y.net/apple-touch-icon.png" />
 <meta name="twitter:site" content="Van11y" />
@@ -35,11 +35,11 @@
 
  <br>
  <div class="aligncenter">
- 	<a href="/" class="logo-link"><img src="https://van11y.net/layout/images/logo-van11y.svg" alt="Back to Van11y home page" width="267" height="90" class="logo" /></a>
+ 	<a href="https://van11y.net/" class="logo-link"><img src="https://van11y.net/layout/images/logo-van11y.svg" alt="Back to Van11y home page" width="267" height="90" class="logo" /></a>
  </div>
  <br>
 
- <h1 class="aligncenter">Demo: Accessible tab panel using ARIA and Vanilla JS </h1>
+ <h1 class="aligncenter">Demos: Accessible tab panel using <abbr title="Accessible Rich Internet Applications">ARIA</abbr> and Vanilla <abbr title="JavaScript">JS</abbr> </h1>
 
  <div class="js-tabs" data-existing-hx="h2" data-tabs-prefix-class="example-tabs">
   <ul class="js-tablist">
@@ -66,9 +66,38 @@
    here the content of 3rd tab
  </div>
 </div>
+
+<br />
+
+ <div class="js-tabs" data-existing-hx="h2" data-tabs-prefix-class="example-tabs">
+  <ul class="js-tablist">
+   <li class="js-tablist__item">
+    <a href="#id_fourth" id="label_id_fourth" class="js-tablist__link">1st tab</a>
+   </li>
+   <li class="js-tablist__item">
+    <a href="#id_fifth" id="label_id_fifth" class="js-tablist__link" data-selected="1">2nd tab (selected)</a>
+   </li>
+   <li class="js-tablist__item">
+    <a href="#id_sixth" id="label_id_sixth" class="js-tablist__link">3rd tab</a>
+   </li>
+  </ul>
+ <div id="id_fourth" class="js-tabcontent">
+   <h2>Title</h2>
+   here the content of 1st tab
+ </div>
+ <div id="id_fifth" class="js-tabcontent">
+   <h2>Other title</h2>
+   here the content of 2nd tab<br />
+   Displayed by default thanks to <code>data-selected="1"</code> attribute on <code>js-tablist__link</code>. 
+ </div>
+ <div id="id_sixth" class="js-tabcontent">
+   <h2>Another title</h2>
+   here the content of 3rd tab
+ </div>
+</div>
    
   
-<div class="footer" role="contentinfo"><br>This demo is a demo of <a href="https://van11y.net/accessible-tab-panel/" class="link">Van11y Accessible tab panel using ARIA</a>.<br></div>
+<div class="footer" role="contentinfo"><br>These demos are taken from <a href="https://van11y.net/accessible-tab-panel/" class="link">Van11y Accessible tab panel using <abbr title="Accessible Rich Internet Applications">ARIA</abbr></a>.<br></div>
 
 </div>
 <script src="../dist/van11y-accessible-tab-panel-aria.min.js"></script>
