@@ -219,6 +219,7 @@
 
                     addClass(tabListLink, prefixClassName + TABS_LINK_STYLE);
                     setAttributes(tabListLink, {
+					    'id' : TABS_PREFIX_IDS + idHref,
                         [ATTR_ROLE]: TABS_ROLE_TAB,
                         [ATTR_CONTROLS]: idHref,
                         'tabindex': '-1',
