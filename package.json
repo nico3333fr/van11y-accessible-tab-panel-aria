@@ -3,7 +3,7 @@
   "name": "van11y-accessible-tab-panel-aria",
   "description": "ES2015 accessible tabs panel system, using ARIA (compatible IE9+ when transpiled)",
   "main": "dist/van11y-accessible-tab-panel-aria.min.js",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "keywords": [
     "Accessibility",
     "ARIA",

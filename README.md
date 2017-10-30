@@ -37,7 +37,6 @@ __Conventions__
 Then, follow the conventions given in this minimal example (in bold).
 
 - use classes needed (```js-tabs```, ```js-tablist```, ```js-tablist__item```, ```js-tablist__link```, ```js-tabcontent```)
-- be careful to use the convention in the links ```a href="#id_first"```
 - check that your anchors are working.
 - for accessibility purposes (for VoiceOver), the plugin has to give focus to ```hx``` (```h2```, ```h3```, ```h4```, etc.) in tab contents.
 
