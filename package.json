@@ -3,7 +3,7 @@
   "name": "van11y-accessible-tab-panel-aria",
   "description": "ES2015 accessible tabs panel system, using ARIA (compatible IE9+ when transpiled)",
   "main": "dist/van11y-accessible-tab-panel-aria.min.js",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "keywords": [
     "Accessibility",
     "ARIA",
@@ -33,12 +33,7 @@
       "url": "https://github.com/nico3333fr/van11y-accessible-tab-panel-aria.git"
     }
   ],
-  "license": [
-    {
-      "name": "MIT",
-      "url": "https://github.com/nico3333fr/van11y-accessible-tab-panel-aria/blob/master/LICENSE"
-    }
-  ],
+  "license": "MIT",
   "homepage": "https://van11y.net/accessible-tab-panel/",
   "devDependencies": {
     "gulp": "^3.9.0",
