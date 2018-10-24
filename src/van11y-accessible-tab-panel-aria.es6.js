@@ -170,8 +170,9 @@
     /**
      * Build tooltips for a container
      * @param  {Node} node
+     * @param  {addListeners} boolean
      */
-    const attach = (node) => {
+    const attach = (node, addListeners = true) => {
 
         $listTabs(node)
             .forEach((tabs_node) => {
@@ -319,164 +320,166 @@
             });
     };
 
-    /* listeners */
-    ['click', 'keydown']
-    .forEach(eventName => {
-        //let isCtrl = false;
+    if (addListeners) {
+        /* listeners */
+        ['click', 'keydown']
+        .forEach(eventName => {
+            //let isCtrl = false;
 
-        doc.body
-            .addEventListener(eventName, e => {
+            doc.body
+                .addEventListener(eventName, e => {
 
-                // click on a tab link or on something IN a tab link
-                let parentLink = searchParent(e.target, TABS_JS_LISTLINK);
-                if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'click') {
-                    let linkSelected = hasClass(e.target, TABS_JS_LISTLINK) === true ? e.target : findById(parentLink);
-                    let parentTabId = searchParent(e.target, TABS_JS);
-                    let parentTab = findById(parentTabId);
-                    //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
-                    let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
-                    let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
+                    // click on a tab link or on something IN a tab link
+                    let parentLink = searchParent(e.target, TABS_JS_LISTLINK);
+                    if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'click') {
+                        let linkSelected = hasClass(e.target, TABS_JS_LISTLINK) === true ? e.target : findById(parentLink);
+                        let parentTabId = searchParent(e.target, TABS_JS);
+                        let parentTab = findById(parentTabId);
+                        //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+                        let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
+                        let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
 
-                    // aria selected false on all links
-                    unSelectLinks($parentListLinks);
-                    // add aria-hidden on all tabs contents
-                    unSelectContents($parentListContents);
-                    // add aria selected on selected link + show linked panel
-                    selectLink(linkSelected);
-
-                    e.preventDefault();
-                }
-
-                // Key down on tabs
-                if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'keydown') {
-                    //let linkSelected = hasClass( e.target, TABS_JS_LISTLINK) === true ? e.target : findById( parentLink );
-                    let parentTabId = searchParent(e.target, TABS_JS);
-                    let parentTab = findById(parentTabId);
-                    let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
-                    let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
-                    let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
-                    let firstLink = $parentListItems[0].querySelector('.' + TABS_JS_LISTLINK);
-                    let lastLink = $parentListItems[$parentListItems.length - 1].querySelector('.' + TABS_JS_LISTLINK);
-
-                    // strike home on a tab => 1st tab
-                    if (e.keyCode === 36) {
+                        // aria selected false on all links
                         unSelectLinks($parentListLinks);
+                        // add aria-hidden on all tabs contents
                         unSelectContents($parentListContents);
-                        selectLink(firstLink);
+                        // add aria selected on selected link + show linked panel
+                        selectLink(linkSelected);
 
                         e.preventDefault();
                     }
-                    // strike end on a tab => last tab
-                    else if (e.keyCode === 35) {
-                        unSelectLinks($parentListLinks);
-                        unSelectContents($parentListContents);
-                        selectLink(lastLink);
 
-                        e.preventDefault();
-                    }
-                    // strike up or left on the tab => previous tab
-                    else if ((e.keyCode === 37 || e.keyCode === 38) && !e.ctrlKey) {
-                        if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
-                            unSelectLinks($parentListLinks);
-                            unSelectContents($parentListContents);
-                            selectLink(lastLink);
+                    // Key down on tabs
+                    if ((hasClass(e.target, TABS_JS_LISTLINK) === true || parentLink !== '') && eventName === 'keydown') {
+                        //let linkSelected = hasClass( e.target, TABS_JS_LISTLINK) === true ? e.target : findById( parentLink );
+                        let parentTabId = searchParent(e.target, TABS_JS);
+                        let parentTab = findById(parentTabId);
+                        let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+                        let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
+                        let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
+                        let firstLink = $parentListItems[0].querySelector('.' + TABS_JS_LISTLINK);
+                        let lastLink = $parentListItems[$parentListItems.length - 1].querySelector('.' + TABS_JS_LISTLINK);
 
-                            e.preventDefault();
-                        } else {
-                            selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
-                            e.preventDefault();
-                        }
-                    }
-                    // strike down or right in the tab => next tab
-                    else if ((e.keyCode === 40 || e.keyCode === 39) && !e.ctrlKey) {
-                        if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
+                        // strike home on a tab => 1st tab
+                        if (e.keyCode === 36) {
                             unSelectLinks($parentListLinks);
                             unSelectContents($parentListContents);
                             selectLink(firstLink);
 
                             e.preventDefault();
-                        } else {
-                            selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
+                        }
+                        // strike end on a tab => last tab
+                        else if (e.keyCode === 35) {
+                            unSelectLinks($parentListLinks);
+                            unSelectContents($parentListContents);
+                            selectLink(lastLink);
+
                             e.preventDefault();
                         }
+                        // strike up or left on the tab => previous tab
+                        else if ((e.keyCode === 37 || e.keyCode === 38) && !e.ctrlKey) {
+                            if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
+                                unSelectLinks($parentListLinks);
+                                unSelectContents($parentListContents);
+                                selectLink(lastLink);
+
+                                e.preventDefault();
+                            } else {
+                                selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
+                                e.preventDefault();
+                            }
+                        }
+                        // strike down or right in the tab => next tab
+                        else if ((e.keyCode === 40 || e.keyCode === 39) && !e.ctrlKey) {
+                            if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
+                                unSelectLinks($parentListLinks);
+                                unSelectContents($parentListContents);
+                                selectLink(firstLink);
+
+                                e.preventDefault();
+                            } else {
+                                selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
+                                e.preventDefault();
+                            }
+                        }
+
                     }
 
-                }
-
-                // Key down in tab panels
-                let parentTabPanelId = searchParent(e.target, TABS_JS_CONTENT);
-                if (parentTabPanelId !== '' && eventName === 'keydown') {
-                    let linkSelected = findById(findById(parentTabPanelId).getAttribute(ATTR_LABELLEDBY));
-                    let parentTabId = searchParent(e.target, TABS_JS);
-                    let parentTab = findById(parentTabId);
-                    let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
-                    let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
-                    let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
-                    let firstLink = $parentListItems[0].querySelector('.' + TABS_JS_LISTLINK);
-                    let lastLink = $parentListItems[$parentListItems.length - 1].querySelector('.' + TABS_JS_LISTLINK);
+                    // Key down in tab panels
+                    let parentTabPanelId = searchParent(e.target, TABS_JS_CONTENT);
+                    if (parentTabPanelId !== '' && eventName === 'keydown') {
+                        let linkSelected = findById(findById(parentTabPanelId).getAttribute(ATTR_LABELLEDBY));
+                        let parentTabId = searchParent(e.target, TABS_JS);
+                        let parentTab = findById(parentTabId);
+                        let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+                        let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
+                        let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
+                        let firstLink = $parentListItems[0].querySelector('.' + TABS_JS_LISTLINK);
+                        let lastLink = $parentListItems[$parentListItems.length - 1].querySelector('.' + TABS_JS_LISTLINK);
 
 
-                    // strike up + ctrl => go to header
-                    if (e.keyCode === 38 && e.ctrlKey) {
-                        setTimeout(function() {
+                        // strike up + ctrl => go to header
+                        if (e.keyCode === 38 && e.ctrlKey) {
+                            setTimeout(function() {
+                                linkSelected.focus();
+                            }, 0);
+                            e.preventDefault();
+                        }
+                        // strike pageup + ctrl => go to prev header
+                        if (e.keyCode === 33 && e.ctrlKey) {
+                            // go to header
                             linkSelected.focus();
-                        }, 0);
-                        e.preventDefault();
-                    }
-                    // strike pageup + ctrl => go to prev header
-                    if (e.keyCode === 33 && e.ctrlKey) {
-                        // go to header
-                        linkSelected.focus();
-                        e.preventDefault();
-                        // then previous
-                        if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
-                            unSelectLinks($parentListLinks);
-                            unSelectContents($parentListContents);
-                            selectLink(lastLink);
+                            e.preventDefault();
+                            // then previous
+                            if (firstLink.getAttribute(ATTR_SELECTED) === 'true') {
+                                unSelectLinks($parentListLinks);
+                                unSelectContents($parentListContents);
+                                selectLink(lastLink);
 
-                        } else {
-                            selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
+                            } else {
+                                selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'prev');
+                            }
+
                         }
+                        // strike pagedown + ctrl => go to next header
+                        if (e.keyCode === 34 && e.ctrlKey) {
+                            // go to header
+                            linkSelected.focus();
+                            e.preventDefault();
+                            // then next
+                            if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
+                                unSelectLinks($parentListLinks);
+                                unSelectContents($parentListContents);
+                                selectLink(firstLink);
 
-                    }
-                    // strike pagedown + ctrl => go to next header
-                    if (e.keyCode === 34 && e.ctrlKey) {
-                        // go to header
-                        linkSelected.focus();
-                        e.preventDefault();
-                        // then next
-                        if (lastLink.getAttribute(ATTR_SELECTED) === 'true') {
-                            unSelectLinks($parentListLinks);
-                            unSelectContents($parentListContents);
-                            selectLink(firstLink);
-
-                        } else {
-                            selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
+                            } else {
+                                selectLinkInList($parentListItems, $parentListLinks, $parentListContents, 'next');
+                            }
                         }
                     }
-                }
 
-                // click on a tab link
-                let parentLinkToPanelId = searchParent(e.target, TABS_JS_LINK_TO_TAB);
-                if ((hasClass(e.target, TABS_JS_LINK_TO_TAB) === true || parentLinkToPanelId !== '') && eventName === 'click') {
-                    let panelSelectedId = hasClass(e.target, TABS_JS_LINK_TO_TAB) === true ? e.target.getAttribute('href').replace('#', '') : findById(parentLinkToPanelId).replace('#', '');
-                    let panelSelected = findById(panelSelectedId);
-                    let buttonPanelSelected = findById(panelSelected.getAttribute(ATTR_LABELLEDBY));
-                    let parentTabId = searchParent(e.target, TABS_JS);
-                    let parentTab = findById(parentTabId);
-                    //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
-                    let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
-                    let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
+                    // click on a tab link
+                    let parentLinkToPanelId = searchParent(e.target, TABS_JS_LINK_TO_TAB);
+                    if ((hasClass(e.target, TABS_JS_LINK_TO_TAB) === true || parentLinkToPanelId !== '') && eventName === 'click') {
+                        let panelSelectedId = hasClass(e.target, TABS_JS_LINK_TO_TAB) === true ? e.target.getAttribute('href').replace('#', '') : findById(parentLinkToPanelId).replace('#', '');
+                        let panelSelected = findById(panelSelectedId);
+                        let buttonPanelSelected = findById(panelSelected.getAttribute(ATTR_LABELLEDBY));
+                        let parentTabId = searchParent(e.target, TABS_JS);
+                        let parentTab = findById(parentTabId);
+                        //let $parentListItems = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTITEM));
+                        let $parentListLinks = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_LISTLINK));
+                        let $parentListContents = [].slice.call(parentTab.querySelectorAll('.' + TABS_JS_CONTENT));
 
-                    unSelectLinks($parentListLinks);
-                    unSelectContents($parentListContents);
-                    selectLink(buttonPanelSelected);
+                        unSelectLinks($parentListLinks);
+                        unSelectContents($parentListContents);
+                        selectLink(buttonPanelSelected);
 
-                    e.preventDefault();
-                }
+                        e.preventDefault();
+                    }
 
-            }, true);
-    });
+                }, true);
+        });
+    }
 
     const onLoad = () => {
         attach();
