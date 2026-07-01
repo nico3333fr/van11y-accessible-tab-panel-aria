@@ -36,8 +36,8 @@
   "license": "MIT",
   "homepage": "https://van11y.net/accessible-tab-panel/",
   "devDependencies": {
-    "@babel/core": "^7.24.0",
-    "@babel/preset-env": "^7.24.0",
+    "@babel/core": "^8.0.1",
+    "@babel/preset-env": "^8.0.2",
     "terser": "^5.30.0"
   }
 }
