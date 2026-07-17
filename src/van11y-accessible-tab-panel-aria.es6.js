@@ -159,19 +159,16 @@
         }
     }
 
-
-    /** Find all tabs inside a container
-     * @param  {Node} node Default document
-     * @return {Array}
-     */
-    const $listTabs = (node = doc) => [].slice.call(node.querySelectorAll('.' + TABS_JS));
-
-
     /**
      * Build tooltips for a container
      * @param  {Node} node
      */
     const attach = (node) => {
+      /** Find all tabs inside a container
+       * @param  {Node} node Default document
+       * @return {Array}
+       */
+      const $listTabs = (node = doc) => [].slice.call(node.querySelectorAll('.' + TABS_JS));
 
         $listTabs(node)
             .forEach((tabs_node) => {
